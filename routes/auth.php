@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -33,6 +34,10 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
+
+    // admin Authtentication
+    Route::get('login-admin', [AdminController::class, 'authCreate'])->name('login.admin');
+    Route::post('login-admin', [AuthenticatedSessionController::class, 'storeAdmin']);
 });
 
 Route::middleware('auth')->group(function () {

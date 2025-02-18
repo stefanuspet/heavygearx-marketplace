@@ -1,14 +1,14 @@
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
+import AuthLayout from '@/Layouts/AuthLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
+        phone: '',
         password: '',
         password_confirmation: '',
     });
@@ -22,10 +22,13 @@ export default function Register() {
     };
 
     return (
-        <GuestLayout>
+        <AuthLayout>
             <Head title="Register" />
 
             <form onSubmit={submit}>
+                <h1 className="mb-8 text-2xl font-bold text-gray-900">
+                    Register
+                </h1>
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 
@@ -58,6 +61,23 @@ export default function Register() {
                     />
 
                     <InputError message={errors.email} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="phone" value="Phone" />
+
+                    <TextInput
+                        id="phone"
+                        type="text"
+                        name="phone"
+                        value={data.phone}
+                        className="mt-1 block w-full"
+                        autoComplete="phone"
+                        onChange={(e) => setData('phone', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.phone} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
@@ -110,11 +130,14 @@ export default function Register() {
                         Already registered?
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <button
+                        className="ms-4 rounded-lg bg-buttonPrimary p-2 font-medium text-white hover:bg-buttonHoverPrimary"
+                        disabled={processing}
+                    >
                         Register
-                    </PrimaryButton>
+                    </button>
                 </div>
             </form>
-        </GuestLayout>
+        </AuthLayout>
     );
 }

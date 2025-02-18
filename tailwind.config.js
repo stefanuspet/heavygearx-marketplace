@@ -1,5 +1,5 @@
-import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -12,11 +12,25 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                primary: '#FFFFFF',
+                secondary: '#E0E0E0',
+                textPrimary: '#222222',
+                textSecondary: '#444444',
+                buttonPrimary: '#FFB400',
+                buttonSecondary: '#444444',
+                buttonHoverPrimary: '#E09B00',
+                buttonHoverSecondary: '#333333',
+                line: '#E0E0E0',
+                success: '#28A745',
+                warning: '#FFC107',
+                error: '#DC3545',
+            },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                poppins: ['Poppins', ...defaultTheme.fontFamily.sans],
             },
         },
     },
 
-    plugins: [forms],
+    plugins: [forms, require('tailwind-scrollbar-hide')],
 };

@@ -1,11 +1,10 @@
-import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import AuthLayout from '@/Layouts/AuthLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 
-export default function Login({ status, canResetPassword, message }) {
+const LoginAdmin = ({ status }) => {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -15,12 +14,10 @@ export default function Login({ status, canResetPassword, message }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('login'), {
+        post(route('login.admin'), {
             onFinish: () => reset('password'),
         });
     };
-
-    console.log(message);
 
     return (
         <AuthLayout>
@@ -64,49 +61,16 @@ export default function Login({ status, canResetPassword, message }) {
                     />
                     <InputError message={errors.password} className="mt-2" />
                 </div>
-                <div className="flex items-start">
-                    <div className="flex w-full justify-between">
-                        <div className="text-sm">
-                            <label className="flex items-center">
-                                <Checkbox
-                                    name="remember"
-                                    checked={data.remember}
-                                    onChange={(e) =>
-                                        setData('remember', e.target.checked)
-                                    }
-                                />
-                                <span className="ms-2 text-sm text-gray-600">
-                                    Remember me
-                                </span>
-                            </label>
-                        </div>
-                        {canResetPassword && (
-                            <Link
-                                href={route('password.request')}
-                                className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                            >
-                                Forgot your password?
-                            </Link>
-                        )}
-                    </div>
-                </div>
                 <button
                     disabled={processing}
                     type="submit"
-                    className="focus:ring-primary-300 rounded-lg bg-buttonPrimary px-5 py-3 text-center text-base font-medium text-white hover:bg-buttonHoverPrimary focus:ring-4 sm:w-auto"
+                    className="focus:ring-primary-300 rounded-lg bg-buttonPrimary px-5 py-3 text-center text-base font-medium text-white hover:bg-buttonHoverPrimary focus:ring-4 sm:w-auto lg:w-full"
                 >
                     Login to your account
                 </button>
-                <div className="text-sm font-medium text-gray-500">
-                    Not registered?
-                    <Link
-                        href={route('register')}
-                        className="text-primary-700 pl-2 hover:underline"
-                    >
-                        Create account
-                    </Link>
-                </div>
             </form>
         </AuthLayout>
     );
-}
+};
+
+export default LoginAdmin;

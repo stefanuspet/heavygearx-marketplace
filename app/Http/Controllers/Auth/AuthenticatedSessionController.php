@@ -33,7 +33,30 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+
+        if ($user->role !== 'user') {
+            Auth::logout();
+            return back()->withErrors(['email' => 'These credentials do not match our records.']);
+        }
+
+        return redirect()->route('user.home');
+    }
+
+    public function storeAdmin(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+
+        $request->session()->regenerate();
+
+        $user = Auth::user();
+
+        if ($user->role !== 'admin') {
+            Auth::logout();
+            return back()->withErrors(['email' => 'These credentials do not match our records.']);
+        }
+
+        return redirect()->route('admin.dashboard');
     }
 
     /**
