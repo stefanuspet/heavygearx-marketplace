@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AbuseRule;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AbuseRuleController extends Controller
 {
@@ -12,7 +13,7 @@ class AbuseRuleController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Admin/Rule');
     }
 
     /**

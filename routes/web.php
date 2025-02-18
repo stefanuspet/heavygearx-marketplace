@@ -1,23 +1,30 @@
 <?php
 
+use App\Http\Controllers\AbuseRuleController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ChatMessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RentReportController;
+use App\Http\Controllers\SaleReportController;
+use App\Http\Controllers\ToolCategoryController;
+use App\Http\Controllers\ToolController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
-Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 Route::get('/', [UserController::class, 'index'])->name('user.home');
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin-product', [ToolController::class, 'index'])->name('admin.catalog');
+    Route::get('/admin-category', [ToolCategoryController::class, 'index'])->name('admin.category');
+    Route::get('/admin-transaction', [TransactionController::class, 'index'])->name('admin.transaction');
+    Route::get('/admin-rentreport', [RentReportController::class, 'index'])->name('admin.rentreport');
+    Route::get('/admin-salereport', [SaleReportController::class, 'index'])->name('admin.salereport');
+    Route::get('/admin-listuser', [AdminController::class, 'listUser'])->name('admin.listuser');
+    Route::get('/admin-rule', [AbuseRuleController::class, 'index'])->name('admin.rule');
+    Route::get('/admin-chat', action: [ChatMessageController::class, 'index'])->name('admin.chat');
+});
 
 require __DIR__ . '/auth.php';

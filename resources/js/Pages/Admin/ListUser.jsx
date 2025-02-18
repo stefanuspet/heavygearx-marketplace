@@ -1,11 +1,11 @@
 import AdminLayout from '@/Layouts/AdminLayout';
 
-const Dashboard = () => {
+const ListUser = () => {
     return (
         <AdminLayout>
-            <h1>Dashboard</h1>
+            <h1>List User</h1>
         </AdminLayout>
     );
 };
 
-export default Dashboard;
+export default ListUser;

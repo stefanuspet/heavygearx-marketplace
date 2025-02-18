@@ -22,4 +22,9 @@ class AdminController extends Controller
             'status' => session('status'),
         ]);
     }
+
+    public function listUser()
+    {
+        return Inertia::render('Admin/ListUser');
+    }
 }

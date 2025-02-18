@@ -1,11 +1,11 @@
 import AdminLayout from '@/Layouts/AdminLayout';
 
-const Dashboard = () => {
+const RentReport = () => {
     return (
         <AdminLayout>
-            <h1>Dashboard</h1>
+            <h1>Rent Reports</h1>
         </AdminLayout>
     );
 };
 
-export default Dashboard;
+export default RentReport;

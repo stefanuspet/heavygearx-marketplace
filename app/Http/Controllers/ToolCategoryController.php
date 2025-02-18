@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ToolCategory;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ToolCategoryController extends Controller
 {
@@ -12,7 +13,7 @@ class ToolCategoryController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Admin/Category');
     }
 
     /**
