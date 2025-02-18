@@ -12,7 +12,7 @@ const AdminLayout = ({ children }) => {
                     id="main-content"
                     className="relative h-full w-full overflow-y-auto bg-gray-50 lg:ml-64"
                 >
-                    <main className="min-h-screen p-8">{children}</main>
+                    <main className="min-h-screen px-4 py-8">{children}</main>
                     <FooterAdmin />
                 </div>
             </div>

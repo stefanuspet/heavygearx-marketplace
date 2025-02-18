@@ -13,7 +13,8 @@ class ToolController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Product');
+        $product = Tool::with('category')->get();
+        return Inertia::render('Admin/Product', ['products' => $product]);
     }
 
     /**

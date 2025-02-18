@@ -13,23 +13,28 @@ class ToolCategoryController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Category');
+        $categories = ToolCategory::all();
+        return Inertia::render('Admin/Category', ['categories' => $categories]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'name' => 'required',
+            ]
+        );
+
+        try {
+            ToolCategory::create($request->all());
+            return redirect()->back()->with('success', 'Category created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to create category: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -51,16 +56,38 @@ class ToolCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ToolCategory $toolCategory)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate(
+            [
+                'name' => 'required',
+            ]
+        );
+
+        try {
+            $category = ToolCategory::find($id);
+            $category->update($request->all());
+            return redirect()->back()->with('success', 'Category updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update category: ' . $e->getMessage());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ToolCategory $toolCategory)
+    public function destroy($id)
     {
-        //
+        try {
+            $category = ToolCategory::find($id);
+            if ($category) {
+                $category->delete();
+                return redirect()->back()->with('success', 'Category deleted successfully.');
+            } else {
+                return redirect()->back()->with('error', 'Category not found.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete category: ' . $e->getMessage());
+        }
     }
 }

@@ -17,8 +17,17 @@ Route::get('/', [UserController::class, 'index'])->name('user.home');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin-product', [ToolController::class, 'index'])->name('admin.catalog');
+    Route::get('/admin-product', [ToolController::class, 'index'])->name('admin.product');
+    Route::post('/admin-product', [ToolController::class, 'store'])->name('admin.product.store');
+
+    // category
     Route::get('/admin-category', [ToolCategoryController::class, 'index'])->name('admin.category');
+    Route::get('/admin-category/{id}', [ToolCategoryController::class, 'show'])->name('admin.category.show');
+    Route::post('/admin-category', [ToolCategoryController::class, 'store'])->name('admin.category.store');
+    Route::put('/admin-category/{id}', [ToolCategoryController::class, 'update'])->name('admin.category.update');
+    Route::delete('/admin-category/{id}', [ToolCategoryController::class, 'destroy'])->name('admin.category.destroy');
+
+
     Route::get('/admin-transaction', [TransactionController::class, 'index'])->name('admin.transaction');
     Route::get('/admin-rentreport', [RentReportController::class, 'index'])->name('admin.rentreport');
     Route::get('/admin-salereport', [SaleReportController::class, 'index'])->name('admin.salereport');
