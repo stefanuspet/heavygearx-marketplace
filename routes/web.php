@@ -19,10 +19,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin-product', [ToolController::class, 'index'])->name('admin.product');
     Route::post('/admin-product', [ToolController::class, 'store'])->name('admin.product.store');
+    Route::post('/admin-product/{id}', [ToolController::class, 'update'])->name('admin.product.update');
+    Route::delete('/admin-product/{id}', [ToolController::class, 'destroy'])->name('admin.product.destroy');
 
     // category
     Route::get('/admin-category', [ToolCategoryController::class, 'index'])->name('admin.category');
-    Route::get('/admin-category/{id}', [ToolCategoryController::class, 'show'])->name('admin.category.show');
     Route::post('/admin-category', [ToolCategoryController::class, 'store'])->name('admin.category.store');
     Route::put('/admin-category/{id}', [ToolCategoryController::class, 'update'])->name('admin.category.update');
     Route::delete('/admin-category/{id}', [ToolCategoryController::class, 'destroy'])->name('admin.category.destroy');

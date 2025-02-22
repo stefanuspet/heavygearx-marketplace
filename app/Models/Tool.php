@@ -10,7 +10,7 @@ class Tool extends Model
     protected $fillable = [
         'name',
         'description',
-        'cartegory_id',
+        'category_id',
         'image',
         'price',
         'listing_type',

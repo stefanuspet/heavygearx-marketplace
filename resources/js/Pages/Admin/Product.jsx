@@ -1,8 +1,63 @@
 import ModalForm from '@/Components/ModalForm';
 import AdminLayout from '@/Layouts/AdminLayout';
+import { useForm, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import { FaPen, FaTrash } from 'react-icons/fa';
 import { IoSearch } from 'react-icons/io5';
-const Product = ({ products }) => {
-    console.log(products);
+import swal from 'sweetalert';
+
+const Product = ({ products, categories }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredproducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+
+    const { delete: destroy } = useForm();
+
+    const { flash } = usePage().props;
+
+    console.log(categories);
+
+    const openAddModal = () => {
+        setSelectedProduct(null); // Reset data agar modal digunakan untuk tambah
+        setIsModalOpen(true);
+    };
+
+    const openEditModal = (product) => {
+        console.log('Editing:', product);
+        setSelectedProduct(product); // Set data yang akan diedit
+        setIsModalOpen(true);
+    };
+
+    // Fungsi untuk menutup modal
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedProduct(null); // Reset setelah modal ditutup
+    };
+
+    const handleDelete = (id) => {
+        if (window.confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+            destroy(route('admin.product.destroy', id));
+        }
+    };
+
+    useEffect(() => {
+        if (flash.success || flash.error) {
+            swal({
+                title: flash.success ? 'Success' : 'Error',
+                text: flash.success || flash.error,
+                icon: flash.success ? 'success' : 'error',
+
+                button: false,
+                timer: 1500,
+            });
+        }
+
+        console.log(flash, 'flash');
+    }, [flash]);
 
     return (
         <AdminLayout>
@@ -25,18 +80,17 @@ const Product = ({ products }) => {
                             type="search"
                             id="default-search"
                             className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                            placeholder="Search Mockups, Logos..."
+                            placeholder="Search Products..."
                             required
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <button
-                            type="submit"
-                            className="absolute inset-y-1 right-1 rounded-lg bg-buttonPrimary px-4 py-2 text-sm font-medium text-white hover:bg-buttonHoverPrimary focus:outline-none focus:ring-4 focus:ring-blue-300"
-                        >
-                            Search
-                        </button>
                     </div>
                 </form>
-                <button className="h-fit w-fit rounded-md bg-success px-3 py-2 font-medium text-white">
+                <button
+                    onClick={openAddModal}
+                    className="h-fit w-fit rounded-md bg-success px-3 py-2 font-medium text-white"
+                >
                     Add Product
                 </button>
             </div>
@@ -72,17 +126,18 @@ const Product = ({ products }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product) => (
+                        {filteredproducts.map((product) => (
                             <tr
                                 key={product.id}
                                 className="border-b border-gray-200 bg-white hover:bg-gray-50"
                             >
-                                <th
-                                    scope="row"
-                                    className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
-                                >
-                                    {product.image}
-                                </th>
+                                <td className="px-6 py-4">
+                                    <img
+                                        src={`/storage/${product.image}`}
+                                        alt="Product Image"
+                                        className="h-20 w-20 object-cover"
+                                    />
+                                </td>
                                 <td className="px-6 py-4">{product.name}</td>
                                 <td className="px-6 py-4">
                                     {product.listing_type}
@@ -93,32 +148,123 @@ const Product = ({ products }) => {
                                 <td className="px-6 py-4">{product.stock}</td>
                                 <td className="px-6 py-4">{product.status}</td>
                                 <td className="px-6 py-4">{product.price}</td>
-                                <td className="flex gap-x-2 px-6 py-4 text-right">
-                                    <button
-                                        href="#"
-                                        className="font-medium text-blue-600 hover:underline"
-                                    >
-                                        Detail
-                                    </button>
-                                    <button
-                                        href="#"
-                                        className="font-medium text-warning hover:underline"
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        href="#"
-                                        className="font-medium text-error hover:underline"
-                                    >
-                                        Delete
-                                    </button>
+
+                                <td className="px-6 py-4">
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() =>
+                                                openEditModal(product)
+                                            }
+                                            className="flex items-center gap-2 rounded-md bg-buttonPrimary px-3 py-2 font-medium text-white hover:bg-buttonHoverPrimary"
+                                        >
+                                            <FaPen />
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() =>
+                                                handleDelete(product.id)
+                                            }
+                                            className="flex items-center gap-2 rounded-md bg-red-600 px-3 py-2 font-medium text-white hover:bg-red-700"
+                                        >
+                                            <FaTrash />
+                                            Delete
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            <ModalForm />
+            <ModalForm
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                submitRoute={
+                    selectedProduct
+                        ? 'admin.product.update'
+                        : 'admin.product.store'
+                }
+                method={selectedProduct ? 'PUT' : 'POST'}
+                id={selectedProduct ? selectedProduct.id : null}
+                initialData={
+                    selectedProduct
+                        ? {
+                              name: selectedProduct.name,
+                              description: selectedProduct.description,
+                              category_id: selectedProduct.category_id,
+                              image: selectedProduct.image,
+                              price: selectedProduct.price,
+                              listing_type: selectedProduct.listing_type,
+                              stock: selectedProduct.stock,
+                              status: selectedProduct.status,
+                          }
+                        : {
+                              name: '',
+                              description: '',
+                              category_id: '',
+                              image: '',
+                              price: '',
+                              listing_type: '',
+                              stock: '',
+                              status: '',
+                          }
+                }
+                fields={[
+                    {
+                        name: 'name',
+                        label: 'Name',
+                        type: 'text',
+                    },
+                    {
+                        name: 'description',
+                        label: 'Description',
+                        type: 'text',
+                    },
+                    {
+                        name: 'category_id',
+                        label: 'Category',
+                        type: 'select',
+                        options: categories.map((category) => ({
+                            value: category.id,
+                            label: category.name,
+                        })),
+                    },
+                    {
+                        name: 'image',
+                        label: 'Image',
+                        type: 'file',
+                    },
+                    {
+                        name: 'price',
+                        label: 'Price',
+                        type: 'text',
+                    },
+                    {
+                        name: 'listing_type',
+                        label: 'Listing Type',
+                        type: 'select',
+                        options: [
+                            { value: 'sale', label: 'Sale' },
+                            { value: 'rent', label: 'Rent' },
+                        ],
+                    },
+                    {
+                        name: 'stock',
+                        label: 'Stock',
+                        type: 'text',
+                    },
+                    {
+                        name: 'status',
+                        label: 'Status',
+                        type: 'select',
+                        options: [
+                            { value: 'available', label: 'Available' },
+                            { value: 'sold', label: 'Sold' },
+                            { value: 'rented', label: 'Rented' },
+                        ],
+                    },
+                ]}
+            />
         </AdminLayout>
     );
 };
