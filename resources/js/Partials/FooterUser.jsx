@@ -2,6 +2,8 @@ const FooterUser = () => {
     return (
         <footer className="bg-white py-12 xl:py-24">
             <div className="container mx-auto px-4 xl:px-0">
+                <hr className="my-8 border-gray-200 lg:my-12" />
+
                 <div className="grid gap-12 xl:grid-cols-6 xl:gap-24">
                     <div className="col-span-2">
                         <a href="" className="mr-4 flex">
