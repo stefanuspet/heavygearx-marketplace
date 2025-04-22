@@ -26,7 +26,7 @@ export default function Register() {
             <Head title="Register" />
 
             <form onSubmit={submit}>
-                <h1 className="mb-8 text-2xl font-bold text-gray-900">
+                <h1 className="mb-4 text-xl font-bold text-gray-900 lg:text-2xl">
                     Register
                 </h1>
                 <div>
@@ -131,7 +131,7 @@ export default function Register() {
                     </Link>
 
                     <button
-                        className="ms-4 rounded-lg bg-buttonPrimary p-2 font-medium text-white hover:bg-buttonHoverPrimary"
+                        className="ms-4 rounded-lg bg-buttonPrimary px-3 py-2 text-sm font-medium text-white hover:bg-buttonHoverPrimary lg:px-2 lg:py-2 lg:text-base"
                         disabled={processing}
                     >
                         Register

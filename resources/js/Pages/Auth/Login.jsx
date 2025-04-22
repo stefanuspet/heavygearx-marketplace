@@ -32,10 +32,12 @@ export default function Login({ status, canResetPassword, message }) {
                 </div>
             )}
 
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-xl font-bold text-gray-900 lg:text-2xl">
                 Welcome To HeavyGearX
             </h2>
-            <p className="text-md font-normal">Login To this Platform</p>
+            <p className="lg:text-md text-sm font-normal">
+                Login To this Platform
+            </p>
             <form className="mt-8 space-y-6" onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
@@ -44,7 +46,7 @@ export default function Login({ status, canResetPassword, message }) {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="block w-full lg:mt-1"
                         autoComplete="username"
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
@@ -65,7 +67,7 @@ export default function Login({ status, canResetPassword, message }) {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
                 <div className="flex items-start">
-                    <div className="flex w-full justify-between">
+                    <div className="w-full justify-between lg:flex">
                         <div className="text-sm">
                             <label className="flex items-center">
                                 <Checkbox
@@ -80,20 +82,22 @@ export default function Login({ status, canResetPassword, message }) {
                                 </span>
                             </label>
                         </div>
-                        {canResetPassword && (
-                            <Link
-                                href={route('password.request')}
-                                className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                            >
-                                Forgot your password?
-                            </Link>
-                        )}
+                        <div className="pt-2 lg:pt-0">
+                            {canResetPassword && (
+                                <Link
+                                    href={route('password.request')}
+                                    className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                >
+                                    Forgot your password?
+                                </Link>
+                            )}
+                        </div>
                     </div>
                 </div>
                 <button
                     disabled={processing}
                     type="submit"
-                    className="focus:ring-primary-300 rounded-lg bg-buttonPrimary px-5 py-3 text-center text-base font-medium text-white hover:bg-buttonHoverPrimary focus:ring-4 sm:w-auto"
+                    className="focus:ring-primary-300 rounded-lg bg-buttonPrimary px-3 py-2 text-center text-sm font-medium text-white hover:bg-buttonHoverPrimary focus:ring-4 sm:w-auto lg:px-5 lg:py-3 lg:text-base"
                 >
                     Login to your account
                 </button>

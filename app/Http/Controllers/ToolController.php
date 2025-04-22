@@ -67,10 +67,22 @@ class ToolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tool $tool)
+    public function show($id)
     {
-        //
+        $product = Tool::findOrFail($id);
+
+        // Ambil produk lain dengan category_id yang sama, kecuali dirinya sendiri
+        $relatedProducts = Tool::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->take(4) // ambil maksimal 4 related product, bisa disesuaikan
+            ->get();
+
+        return Inertia::render('DetailProduct', [
+            'product' => $product,
+            'relatedProducts' => $relatedProducts
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.

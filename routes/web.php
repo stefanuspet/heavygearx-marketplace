@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [UserController::class, 'index'])->name('user.home');
+Route::get('/detail-product/{id}', [ToolController::class, 'show'])->name('product.detail');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.dashboard');

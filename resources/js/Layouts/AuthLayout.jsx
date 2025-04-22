@@ -1,10 +1,10 @@
 const AuthLayout = ({ children }) => {
     return (
-        <div className="font-poppins pt:mt-0 mx-auto flex flex-col items-center justify-center bg-background px-6 pt-4 md:h-screen">
+        <div className="pt:mt-0 bg-background mx-auto flex flex-col items-center justify-center px-6 pt-4 font-poppins md:h-screen">
             <a className="mb-4 flex items-center justify-center text-2xl font-semibold lg:mb-4">
                 <img
                     src="/images/RectangleLogo.png"
-                    className="w-32"
+                    className="w-20 lg:w-32"
                     alt="HeavyGearX Logo"
                 />
             </a>
